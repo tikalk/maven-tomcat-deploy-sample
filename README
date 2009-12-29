@@ -8,9 +8,9 @@ the sample is made of two main applications with submodules, kuku and kiki.
 the structure is:
 
 main-reactor -
-    main-parent - (parent for all sub modules)
     repo-parent - (parent afor all, declares repositories)
-    tomcat-deploy - (module to install tomcat)
+    main-parent - (parent for all sub modules,inherits repo-parent)
+    tomcat-deploy - (module to install tomcat, inherits repo-parent)
     kiki-reactor -
         kiki-core - (parent is main-parent)
         kiki-web - (parent is main-parent)
@@ -18,11 +18,9 @@ main-reactor -
         kuku-core - (parent is main-parent)
         kuku-web - (parent is main-parent)
 
-
-the reactor are only reactors.
+the reactors are only reactors.
 all sub module inherit main-parent.
-reactrors inherit each other from top down.
-
+reactrors inherit each other from down up.
 
 what it tries to achieve:
 
@@ -37,41 +35,49 @@ home -
 
 
 
+
+
 Behaviour should be:
 deploy is by explicitly activating a deploy profile.
 if running maven from the top most reactor everything should be deployed.
-if tomcat does not exists it should be installed.
+if tomcat does not exists it should be installed. echived partially.
 if running from a second level reactor everything under it should be deployed.
 if running a single module only it should be deployed.
 deployment includes all dependencies.
 all jars should go to the lib folder.
 all wars should go to the webapp folder, exploded.
-the exploded wars should not contain their dependencies under WEB-INF/lib.
+the exploded wars should not contain their dependencies under WEB-INF/lib. could not echive that with war:exploded.
+
+
 
 we would like:
-1) that dependencies are copied more then once,
+1) that dependencies are NOT copied more then once,
     for example all projects depend on log4j,it will be copied to the lib folder for every
     sub module, hopefully overriding each other with the same file.
 
 2) we don't want to touch every sub module pom,
-    if a sub module is added it should be deployed automatically when invoking the deploy profile.
+    if a sub module is added it should be deployed automatically when invoking the deploy profile. the solution currentlly fulfils that.
 
 
 
-current implementation (please fix if you change something):
+
+
+current implementation :
 all submodules inherit from main-parent.
 a 'deploy' profile in main-parent does the job of copying wars and jars to their
     deploy location.
-the profile overrides configuration of maven jar and war plugin to build the artifact to
+the profile overrides configuration of maven jar and war plugins to build the artifact to
 the deploy location instead of the default location. this results is no files under
 maven target, i have no idea what it can do to unit tests.
-a tomcat-deploy module installs tomcat, it is activated by the 'deploy' profile.
+a tomcat-deploy module installs tomcat, it is activated by edding it as module to the 'deploy' profile.
 
-the way it is now the first build must be doen from the top most reactor so all
-sub modules are deployed and tomcat installed.
+if tomcat exists it should not be installed, tried to do that with a 'mising file' activation but it doesn't work, its always active.
+
+also , the tomcat-deploy module is only activated when we run maven from the top most reactor, not from other modules or reactors,
+
+the way it is now the first build must be done from the top most reactor so all sub modules are deployed and tomcat installed.
 
 this demo uses tomcat 5 from the central repo.
-
 
 to test run:
 change those properties to point to a home folder:
@@ -79,6 +85,8 @@ change those properties to point to a home folder:
     tomcat-deploy: tomcat.install.location
 
     mvn clean install -Pdeploy
+
+
 
 see the source, and issues.
 
