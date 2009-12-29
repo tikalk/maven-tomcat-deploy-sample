@@ -11,9 +11,19 @@
     <name>main-parent</name>
 
 
+    <parent>
+        <artifactId>repo-parent</artifactId>
+        <groupId>com.tikal.mvn.sample</groupId>
+        <version>1.0</version>
+    </parent>
+
+
+
+
+
     <properties>
         <!-- change that or send a -D jvm argument -->
-        <deploy.home>../deploy-home/</deploy.home>
+        <deploy.home>/devel/tikal-fuse/maven-tomcat-deploy-sample/deploy-home</deploy.home>
     </properties>
 
 
@@ -27,7 +37,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

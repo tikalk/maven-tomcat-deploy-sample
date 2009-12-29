@@ -18,6 +18,9 @@ main-reactor -
         kuku-web - (parent is main-parent)
 
 
+the reactor are only reactors.
+all sub module inherit main-parent.
+reactrors inherit each other from top down.
 
 
 what it tries to achieve:
@@ -58,7 +61,23 @@ current implementation (please fix if you change something):
 all submodules inherit from main-parent.
 a 'deploy' profile in main-parent does the job of copying wars and jars to their
     deploy location.
+the profile overrides configuration of maven jar and war plugin to build the artifact to
+the deploy location instead of the default location. this results is no files under
+maven target, i have no idea what it can do to unit tests.
 a tomcat-deploy module installs tomcat, it is activated by the 'deploy' profile.
+
+the way it is now the first build must be doen from the top most reactor so all
+sub modules are deployed and tomcat installed.
+
+this demo uses tomcat 5 from the central repo.
+
+
+to test run:
+change those properties to point to a home folder:
+    main-parent:   deploy.home
+    tomcat-deploy: tomcat.install.location
+
+    mvn clean install -Pdeploy
 
 see the source, and issues.
 

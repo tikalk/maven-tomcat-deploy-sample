@@ -10,8 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
     <name>root reactor</name>
 
+ 
 
     <modules>
+        <module>repo-parent</module>
         <module>main-parent</module>
         <module>kiki-reactor</module>
         <module>kuku-reactor</module>

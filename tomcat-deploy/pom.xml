@@ -7,20 +7,20 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tikal.mvn.sample</groupId>
     <artifactId>tomcat-deploy</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
     <name>tomcat-deploy</name>
-    <packaging>pom</packaging>
 
 
-    <!--<parent>-->
-        <!--<artifactId>main-parent</artifactId>-->
-        <!--<groupId>com.tikal.mvn.sample</groupId>-->
-        <!--<version>1.0</version>-->
-    <!--</parent>-->
+    <parent>
+        <artifactId>repo-parent</artifactId>
+        <groupId>com.tikal.mvn.sample</groupId>
+        <version>1.0</version>
+    </parent>
 
 
     <properties>
-        <tomcat.install.location>../deploy-home/</tomcat.install.location>
+        <tomcat.install.location>../deploy-home/tomcat</tomcat.install.location>
     </properties>
 
 

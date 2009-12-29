@@ -1,3 +1,7 @@
 *.iml
 *.ipr
 *.iws
+target
+*~
+deploy-home/tomcat/
+deploy-home/app
