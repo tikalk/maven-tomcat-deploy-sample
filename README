@@ -9,6 +9,7 @@ the structure is:
 
 main-reactor -
     main-parent - (parent for all sub modules)
+    repo-parent - (parent afor all, declares repositories)
     tomcat-deploy - (module to install tomcat)
     kiki-reactor -
         kiki-core - (parent is main-parent)
