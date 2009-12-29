@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.tikal.mvn.sample.kuku</groupId>
+    <artifactId>kuku-core</artifactId>
+    <packaging>jar</packaging>
+    <name>kuku-core</name>
+
+
+    <parent>
+        <artifactId>main-parent</artifactId>
+        <groupId>com.tikal.mvn.sample</groupId>
+        <version>1.0</version>
+    </parent>
+
+
+    <build>
+        <finalName>kuku-core</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
+        </dependency>
+    </dependencies>
+
+</project>

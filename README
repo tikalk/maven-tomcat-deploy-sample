@@ -1,0 +1,67 @@
+
+This is not a real application, it a sample maven template for deploying
+a few war and jar files into tomcat, it is also not complete but centered around
+the problem of deploying a few wars and their dependencies.
+
+the sample is made of two main applications with submodules, kuku and kiki.
+
+the structure is:
+
+main-reactor -
+    main-parent - (parent for all sub modules)
+    tomcat-deploy - (module to install tomcat)
+    kiki-reactor -
+        kiki-core - (parent is main-parent)
+        kiki-web - (parent is main-parent)
+    kuku-reactor -
+        kuku-core - (parent is main-parent)
+        kuku-web - (parent is main-parent)
+
+
+
+
+what it tries to achieve:
+
+home -
+    app -
+       lib -
+            all jars go here
+       webapp -
+            all wars go here, exploded
+    tomcat -
+        tomcat installed here
+
+
+
+Behaviour should be:
+deploy is by explicitly activating a deploy profile.
+if running maven from the top most reactor everything should be deployed.
+if tomcat does not exists it should be installed.
+if running from a second level reactor everything under it should be deployed.
+if running a single module only it should be deployed.
+deployment includes all dependencies.
+all jars should go to the lib folder.
+all wars should go to the webapp folder, exploded.
+the exploded wars should not contain their dependencies under WEB-INF/lib.
+
+we would like:
+1) that dependencies are copied more then once,
+    for example all projects depend on log4j,it will be copied to the lib folder for every
+    sub module, hopefully overriding each other with the same file.
+
+2) we don't want to touch every sub module pom,
+    if a sub module is added it should be deployed automatically when invoking the deploy profile.
+
+
+
+current implementation (please fix if you change something):
+all submodules inherit from main-parent.
+a 'deploy' profile in main-parent does the job of copying wars and jars to their
+    deploy location.
+a tomcat-deploy module installs tomcat, it is activated by the 'deploy' profile.
+
+see the source, and issues.
+
+
+
+
