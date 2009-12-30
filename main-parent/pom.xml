@@ -18,13 +18,21 @@
     </parent>
 
 
-
-
-
     <properties>
         <!-- change that or send a -D jvm argument -->
         <deploy.home>/devel/tikal-fuse/maven-tomcat-deploy-sample/deploy-home</deploy.home>
     </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.14</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <build>
@@ -61,7 +69,7 @@
         </profile>
 
 
-
+      
 
         <!-- Notes on this profile:
             this profile deploys all jars and wars to deploy.home.
@@ -88,8 +96,10 @@
                 <DeployLocation>${deploy.home}/app/</DeployLocation>
             </properties>
 
-            
+
             <build>
+                <!-- this keeps the files have the same name always,with the version stripped -->
+                <finalName>${project.artifactId}</finalName>
 
                 <pluginManagement>
                     <plugins>
@@ -98,7 +108,8 @@
                             <artifactId>maven-war-plugin</artifactId>
                             <configuration>
                                 <webappDirectory>${DeployLocation}/webapp/${project.build.finalName}</webappDirectory>
-                                <!--<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>-->
+                                <!--<outputDirectory>${DeployLocation}/webapp/</outputDirectory>-->
+                                <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
                             </configuration>
                         </plugin>
 
@@ -117,22 +128,47 @@
 
                 <plugins>
 
+                    <!-- this is a hack to delete the jars in the wars lib folder -->
+                    <plugin>
+                        <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+                        <artifactId>maven-antrun-extended-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>delete-war-dependencies</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <tasks>
+                                        <delete failonerror="false">
+                                            <fileset
+                                                    dir="${DeployLocation}/webapp/${project.build.finalName}/WEB-INF/lib"
+                                                    includes="**/*.jar"/>
+                                        </delete>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <!--<plugin>-->
-                        <!--<groupId>org.apache.maven.plugins</groupId>-->
-                        <!--<artifactId>maven-war-plugin</artifactId>-->
-                        <!--<configuration>-->
-                            <!--<webappDirectory>${DeployLocation}/webapp/${project.build.finalName}</webappDirectory>-->
-                            <!--&lt;!&ndash;<packagingExcludes>**/*.jar</packagingExcludes>&ndash;&gt;-->
-                        <!--</configuration>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-war-plugin</artifactId>-->
+                    <!--<configuration>-->
+                    <!--<webappDirectory>${DeployLocation}/webapp/${project.build.finalName}</webappDirectory>-->
+                    <!--&lt;!&ndash;<packagingExcludes>**/*.jar</packagingExcludes>&ndash;&gt;-->
+                    <!--</configuration>-->
                     <!--</plugin>-->
 
 
                     <!--<plugin>-->
-                        <!--<groupId>org.apache.maven.plugins</groupId>-->
-                        <!--<artifactId>maven-jar-plugin</artifactId>-->
-                        <!--<configuration>-->
-                            <!--<outputDirectory>${DeployLocation}/lib</outputDirectory>-->
-                        <!--</configuration>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-jar-plugin</artifactId>-->
+                    <!--<configuration>-->
+                    <!--<outputDirectory>${DeployLocation}/lib</outputDirectory>-->
+                    <!--</configuration>-->
                     <!--</plugin>-->
 
 
@@ -153,67 +189,60 @@
                             </execution>
                         </executions>
                     </plugin>
-                    
 
 
-
-
-                    <!-- todo: add clean plugin to clean files -->
+                    <!-- todo: clean -->
 
                     <!--<plugin>-->
-                        <!--<groupId>org.jvnet.maven-antrun-extended-plugin</groupId>-->
-                        <!--<artifactId>maven-antrun-extended-plugin</artifactId>-->
-                        <!--<version>1.8</version>-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<id>deploy-artifact</id>-->
-                                <!--<phase>install</phase>-->
-                                <!--<goals>-->
-                                    <!--<goal>run</goal>-->
-                                <!--</goals>-->
-                                <!--<configuration>-->
-                                    <!--<tasks>-->
+                    <!--<groupId>org.jvnet.maven-antrun-extended-plugin</groupId>-->
+                    <!--<artifactId>maven-antrun-extended-plugin</artifactId>-->
+                    <!--<version>1.8</version>-->
+                    <!--<executions>-->
+                    <!--<execution>-->
+                    <!--<id>deploy-artifact</id>-->
+                    <!--<phase>install</phase>-->
+                    <!--<goals>-->
+                    <!--<goal>run</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                    <!--<tasks>-->
 
-                                        <!--&lt;!&ndash; can also copy dependencies here using resolveArtifact &ndash;&gt;-->
+                    <!--&lt;!&ndash; can also copy dependencies here using resolveArtifact &ndash;&gt;-->
 
 
-                                        <!--<copy toDir="${DeployLocation}/${project.packaging}"-->
-                                              <!--filtering="false"-->
-                                              <!--preservelastmodified="true"-->
-                                              <!--overwrite="true">-->
-                                            <!--&lt;!&ndash;file="${project.build.directory}/${project.build.finalName}.${project.packaging}">&ndash;&gt;-->
-                                            <!--<fileset dir="${project.basedir}">-->
-                                                <!--&lt;!&ndash;<include name="target/${project.build.finalName}.${project.packaging}"/>&ndash;&gt;-->
-                                                <!--<include name="target/*.jar"/>-->
-                                                <!--<include name="target/*.war"/>-->
-                                                <!--&lt;!&ndash;<exclude name="*.pom"/>&ndash;&gt;-->
-                                            <!--</fileset>-->
-                                            <!--<compositemapper>-->
-                                                <!--<globmapper from="target"-->
-                                                            <!--to="/"-->
-                                                            <!--handledirsep="true"/>-->
-                                                <!--&lt;!&ndash;<globmapper from="**/jar/**"&ndash;&gt;-->
-                                                <!--&lt;!&ndash;to="**/lib/**"&ndash;&gt;-->
-                                                <!--&lt;!&ndash;handledirsep="true"/>&ndash;&gt;-->
-                                            <!--</compositemapper>-->
+                    <!--<copy toDir="${DeployLocation}/${project.packaging}"-->
+                    <!--filtering="false"-->
+                    <!--preservelastmodified="true"-->
+                    <!--overwrite="true">-->
+                    <!--&lt;!&ndash;file="${project.build.directory}/${project.build.finalName}.${project.packaging}">&ndash;&gt;-->
+                    <!--<fileset dir="${project.basedir}">-->
+                    <!--&lt;!&ndash;<include name="target/${project.build.finalName}.${project.packaging}"/>&ndash;&gt;-->
+                    <!--<include name="target/*.jar"/>-->
+                    <!--<include name="target/*.war"/>-->
+                    <!--&lt;!&ndash;<exclude name="*.pom"/>&ndash;&gt;-->
+                    <!--</fileset>-->
+                    <!--<compositemapper>-->
+                    <!--<globmapper from="target"-->
+                    <!--to="/"-->
+                    <!--handledirsep="true"/>-->
+                    <!--&lt;!&ndash;<globmapper from="**/jar/**"&ndash;&gt;-->
+                    <!--&lt;!&ndash;to="**/lib/**"&ndash;&gt;-->
+                    <!--&lt;!&ndash;handledirsep="true"/>&ndash;&gt;-->
+                    <!--</compositemapper>-->
 
-                                        <!--</copy>-->
-                                        <!--<echo message="final name ${project.build.directory}/${project.build.finalName}.${project.packaging}"/>-->
-                                        <!--<echo message="the deploy location is ${DeployLocation}"/>-->
-                                    <!--</tasks>-->
-                                <!--</configuration>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
+                    <!--</copy>-->
+                    <!--<echo message="final name ${project.build.directory}/${project.build.finalName}.${project.packaging}"/>-->
+                    <!--<echo message="the deploy location is ${DeployLocation}"/>-->
+                    <!--</tasks>-->
+                    <!--</configuration>-->
+                    <!--</execution>-->
+                    <!--</executions>-->
                     <!--</plugin>-->
 
 
-                   
-
-                    
                 </plugins>
 
 
-                
             </build>
         </profile>
 

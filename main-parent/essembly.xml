@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<assembly  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1'
+   xsi:schemaLocation='http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd'>
+
+   <id>deploy-application</id>
+    <baseDirectory>/devel/tikal-fuse/maven-tomcat-deploy-sample/deploy-home</baseDirectory>
+   <formats>
+       <format>dir</format>
+   </formats>
+   <includeBaseDirectory>false</includeBaseDirectory>
+
+
+    <moduleSets>
+
+        <moduleSet>
+            <includes>
+                <include>${project.groupId}:${project.artifactId}</include>
+            </includes>
+            <binaries>
+                <includeDependencies>true</includeDependencies>
+                <outputDirectory>/devel/tikal-fuse/maven-tomcat-deploy-sample/deploy-home/app/webapp</outputDirectory>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+
+
+    <!--<fileSets>-->
+       <!--<fileSet>-->
+           <!--<directory>src/main/scripts</directory>-->
+           <!--<outputDirectory>bin</outputDirectory>-->
+           <!--<fileMode>0777</fileMode>-->
+           <!--<includes>-->
+               <!--<include>*.sh</include>-->
+               <!--<include>*.bat</include>-->
+           <!--</includes>-->
+           <!--<excludes>-->
+               <!--<exclude>unpack.sh</exclude>-->
+           <!--</excludes>-->
+       <!--</fileSet>-->
+       <!--<fileSet>-->
+           <!--<directory>src/main/app/conf</directory>-->
+           <!--<outputDirectory>conf</outputDirectory>-->
+       <!--</fileSet>-->
+   <!--</fileSets>-->
+
+
+
+   <!--<dependencySets>-->
+       <!--<dependencySet>-->
+           <!--<useProjectArtifact>true</useProjectArtifact>-->
+           <!--<useProjectAttachments>true</useProjectAttachments>-->
+           <!--<excludes>-->
+               <!--<exclude>com.clearforest.fresh.freshfacade:facade-web</exclude>-->
+               <!--&lt;!&ndash;<exclude>com.clearforest.fresh.freshfacade:facade-application</exclude>&ndash;&gt;-->
+           <!--</excludes>-->
+           <!--<outputDirectory>lib</outputDirectory>-->
+       <!--</dependencySet>-->
+
+       <!--<dependencySet>-->
+           <!--<includes>-->
+               <!--<include>com.clearforest.fresh.freshfacade:facade-application</include>-->
+           <!--</includes>-->
+           <!--<unpack>true</unpack>-->
+           <!--<unpackOptions>-->
+               <!--<excludes>-->
+                   <!--<exclude>META-INF/**</exclude>-->
+               <!--</excludes>-->
+           <!--</unpackOptions>-->
+           <!--<outputDirectory>webapp</outputDirectory>-->
+       <!--</dependencySet>-->
+
+       <!--<dependencySet>-->
+           <!--<useProjectArtifact>true</useProjectArtifact>-->
+           <!--<useProjectAttachments>true</useProjectAttachments>-->
+           <!--<includes>-->
+               <!--<include>com.clearforest.fresh.freshfacade:facade-web</include>-->
+           <!--</includes>-->
+           <!--<unpack>true</unpack>-->
+           <!--<unpackOptions>-->
+               <!--<excludes>-->
+                   <!--<exclude>META-INF/**</exclude>-->
+                   <!--<exclude>WEB-INF/lib/**</exclude>-->
+               <!--</excludes>-->
+           <!--</unpackOptions>-->
+           <!--<outputDirectory>webapp</outputDirectory>-->
+       <!--</dependencySet>-->
+   <!--</dependencySets>-->
+</assembly>

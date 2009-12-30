@@ -16,9 +16,26 @@
     </parent>
 
 
-    <build>
-        <finalName>kuku-web</finalName>
-    </build>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-war-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--&lt;!&ndash;<webappDirectory>webapp/${project.build.finalName}</webappDirectory>&ndash;&gt;-->
+                    <!--<warSourceExcludes>WEB-INF/lib/**/*.jar</warSourceExcludes>-->
+                    <!--<packagingExcludes>WEB-INF/lib/**/*.jar</packagingExcludes>-->
+                    <!--&lt;!&ndash;<archive>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<manifest>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<addClasspath>true</addClasspath>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<classpathPrefix>lib/</classpathPrefix>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</manifest>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</archive>&ndash;&gt;-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
+
 
     <dependencies>
         <dependency>
