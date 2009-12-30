@@ -16,16 +16,12 @@
     </parent>
 
 
-    <build>
-        <finalName>kiki-core</finalName>
-    </build>
 
     <!-- just so we see something -->
     <dependencies>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
         </dependency>
     </dependencies>
 
