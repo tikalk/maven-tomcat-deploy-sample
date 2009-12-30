@@ -16,10 +16,6 @@
     </parent>
 
 
-    <build>
-        <finalName>kiki-web</finalName>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>com.tikal.mvn.sample.kiki</groupId>
@@ -27,7 +23,6 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 
 
 </project>
